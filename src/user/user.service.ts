@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from './models/user.schema';
+import { User, UserDocument } from './model/user.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './Dto/user.dto';
@@ -38,6 +38,7 @@ export class UserService {
     @Response() response,
   ): Promise<UserDocument> {
     const { username, password } = userDto;
+    console.log('username', username)
     const user = await this.findByUsername(username);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);

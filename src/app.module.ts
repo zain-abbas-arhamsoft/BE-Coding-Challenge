@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import * as dotenv from 'dotenv';
-import { InviteModule } from './user/invite.module';
+import { InviteModule } from './user-invitation/invite.module';
 dotenv.config();
 @Module({
   imports: [

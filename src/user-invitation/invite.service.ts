@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HttpException } from '@nestjs/common';
 import * as moment from 'moment';
-import { Invite, InviteDocument } from './models/invite.schema';
+import { Invite, InviteDocument } from './model/invite.schema';
 import { CreateInviteDto } from './Dto/invite.dto';
 import * as randomatic from 'randomatic';
 

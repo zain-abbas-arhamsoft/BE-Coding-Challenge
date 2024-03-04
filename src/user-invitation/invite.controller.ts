@@ -5,7 +5,7 @@ import {
 
 } from '@nestjs/common';
 import { InviteService } from './invite.service';
-import { CreateInviteDto } from './Dto/invite.dto';
+import { CreateInviteDto } from '../user-invitation/Dto/invite.dto';
 import {  Response } from '@nestjs/common';
 
 @Controller('invite')
