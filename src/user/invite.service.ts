@@ -1,34 +1,49 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus, Response } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HttpException } from '@nestjs/common';
 import * as moment from 'moment';
-import { InviteDocument } from './models/invite.schema';
-import { CreateInviteDto, InviteResponseDto } from './Dto/invite.dto';
+import { Invite, InviteDocument } from './models/invite.schema';
+import { CreateInviteDto } from './Dto/invite.dto';
+import * as randomatic from 'randomatic';
 
 @Injectable()
 export class InviteService {
   constructor(
-    @InjectModel('Invite') private readonly inviteModel: Model<InviteDocument>,
+    @InjectModel(Invite.name) private readonly inviteModel: Model<InviteDocument>,
   ) {}
 
-  async createInvite(createInviteDto: CreateInviteDto) {
-    const { email } = createInviteDto;
-    const invite = new this.inviteModel({
-      email,
-      expiresAt: moment().add(1, 'hour').toDate(),
-    });
-    console.log('invite', invite);
-    const existingInvite = await this.inviteModel.findOne({ email }).exec();
-    console.log('existingInvite', existingInvite);
-    if (existingInvite) {
-      throw new HttpException('Invite already sent', HttpStatus.BAD_REQUEST);
+  async createInvite(@Response() response,createInviteDto: CreateInviteDto) {
+    const { userId } = createInviteDto;
+    const code =  randomatic('Aa0', 6); // Generates a random code with uppercase letters, lowercase letters, and numbers
+    let invite = await this.inviteModel.findOne({ userId }).exec();
+    if (invite) {
+      // Resending the invite, update the expiration date
+      invite.expiresAt = moment().add(1, 'hour').toDate();
+      return response.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Invitation re-sent.',
+        data: {
+          invite,
+        },
+      });
+    } else {
+      // Create a new invite
+      invite = new this.inviteModel({
+        userId,
+        code,
+        expiresAt: moment().add(1, 'hour').toDate(),
+      });
+      await invite.save();
+      return response.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Invitation sent.',
+        data: {
+          invite,
+        },
+      });
     }
-    await invite.save();
+    
   }
 
-  async inviteAlreadySent(email: string): Promise<boolean> {
-    const invite = await this.inviteModel.findOne({ email }).exec();
-    return !!invite;
-  }
 }

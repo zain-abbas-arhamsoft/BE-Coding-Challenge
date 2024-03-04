@@ -10,4 +10,4 @@ import { InviteSchema } from './models/invite.schema';
   controllers: [InviteController],
   providers: [InviteService],
 })
-export class UserModule {}
+export class InviteModule {}

@@ -44,7 +44,7 @@ export class UserService {
     }
     const payload = { username: user.username, sub: user._id };
     const jwt = this.jwtService.sign(payload);
-    return response.status(HttpStatus.CREATED).json({
+    return response.status(HttpStatus.OK).json({
       success: true,
       message: 'User logged in successfully.',
       data: {

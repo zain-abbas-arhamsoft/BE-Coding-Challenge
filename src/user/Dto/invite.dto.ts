@@ -1,14 +1,15 @@
-import { IsEmail } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 
 export class CreateInviteDto {
-  @IsEmail()
-  @ApiProperty()
-  readonly email: string;
-}
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 
-export class InviteResponseDto {
-  readonly id: string;
-  readonly email: string;
-  readonly expiresAt: Date;
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  expiresAt: Date;
 }
