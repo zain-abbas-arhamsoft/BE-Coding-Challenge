@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
@@ -6,18 +6,32 @@ import * as jwt from 'jsonwebtoken';
 export class LoggerMiddleware implements NestMiddleware {
     use(req: Request, res: Response, next: NextFunction) {
         const token = req.headers.authorization?.split(' ')[1];
-        if (token) {
-            jwt.verify(token, process.env.SECRET_KEY as string, (err, decoded) => {
-                if (err || typeof decoded === 'string') {
-                    return res.status(401).json({ message: 'Unauthorized' });
-                }
-                if (decoded.username !== 'admin') {
-                    return res.status(403).json({ message: 'Forbidden' });
-                }
-                next();
+        if (!token) {
+            res.status(HttpStatus.UNAUTHORIZED).json({
+                success: false,
+                message: 'Unauthorized',
+                data: null,
             });
-        } else {
-            next();
+        }
+        if (token) {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
+            if (typeof decoded === 'string') {
+                res.status(HttpStatus.UNAUTHORIZED).json({
+                    success: false,
+                    message: 'Unauthorized',
+                    data: null,
+                });
+            } else {
+                if (decoded.username !== 'admin') {
+                    res.status(HttpStatus.FORBIDDEN).json({
+                        success: false,
+                        message: 'Forbidden',
+                        data: null,
+                    });
+                } else {
+                    next();
+                }
+            }
         }
     }
 }

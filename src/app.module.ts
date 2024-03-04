@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import * as dotenv from 'dotenv';
 import { InviteModule } from './user-invitation/invite.module';
+import { TaskModule } from './user-task/task.module';
 dotenv.config();
 @Module({
   imports: [
@@ -15,7 +16,8 @@ dotenv.config();
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     UserModule,
-    InviteModule
+    InviteModule,
+    TaskModule
   ],
   controllers: [AppController],
   providers: [AppService],

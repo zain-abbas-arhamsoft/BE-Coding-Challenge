@@ -1,0 +1,24 @@
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TaskController } from '../user-task/task.controller';
+import { TaskService } from '../user-task/task.service';
+import * as dotenv from 'dotenv';
+import { TaskSchema } from './model/task.model';
+import { LoggerMiddleware } from '../utils/logger.middleware';
+dotenv.config();
+
+@Module({
+    imports: [
+        MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema }]),
+    ],
+    controllers: [TaskController],
+    providers: [TaskService],
+})
+export class TaskModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(LoggerMiddleware)
+            .forRoutes('create');
+    }
+}
