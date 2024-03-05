@@ -19,6 +19,7 @@ export class InviteService {
     if (invite) {
       // Resending the invite, update the expiration date
       invite.expiresAt = moment().add(1, 'hour').toDate();
+      invite.code = code;
       return invite;
     } else {
       // Create a new invite
