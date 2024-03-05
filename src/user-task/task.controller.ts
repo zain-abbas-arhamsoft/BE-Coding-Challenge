@@ -6,8 +6,9 @@ import {
   Delete,
   Param,
   Body,
-  Request,
-  Response,
+  // Request,
+  // Response,
+  Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from '../user-task/Dto/task.dto';
@@ -22,9 +23,27 @@ export class TaskController {
     return this.taskService.createTask(createTaskDto);
   }
 
-  @Get('/')
-  getTasks(@Request() req, @Response() res): Promise<CreateTaskDto[]> {
-    return this.taskService.getTasks(req, res);
+  // @Get('/')
+  // getTasks(@Request() req, @Response() res): Promise<CreateTaskDto[]> {
+  //   return this.taskService.getTasks(req, res);
+  // }
+
+  @Get('/list')
+  async listTasks(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+    @Query('status') status: string,
+  ) {
+    const queryOptions = {};
+    if (title) {
+      queryOptions['title'] = title;
+    }
+    if (status) {
+      queryOptions['status'] = status;
+    }
+    const paginationOptions = { page, limit };
+    return await this.taskService.listTasks(queryOptions, paginationOptions);
   }
 
   @Get('/:id')

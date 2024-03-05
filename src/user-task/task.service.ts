@@ -1,9 +1,9 @@
 import {
   Injectable,
-  Request,
-  Response,
-  HttpException,
-  HttpStatus,
+  // Request,
+  // Response,
+  // HttpException,
+  // HttpStatus,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -18,22 +18,35 @@ export class TaskService {
     return task.save();
   }
 
-  async getTasks(@Request() req, @Response() response): Promise<Task[]> {
-    const { userId } = req;
-    if (!userId)
-      throw new HttpException('user id not exsist', HttpStatus.BAD_REQUEST);
-    const getTasks = await this.taskModel.find().exec();
-    return response.status(HttpStatus.OK).json({
-      success: true,
-      message: 'Get Tasks.',
-      data: {
-        getTasks,
-      },
-    });
-  }
+  // async getTasks(@Request() req, @Response() response): Promise<Task[]> {
+  //   const { userId } = req;
+  //   if (!userId)
+  //     throw new HttpException('User Id not exsist', HttpStatus.BAD_REQUEST);
+  //   const getTasks = await this.taskModel.find().exec();
+  //   return response.status(HttpStatus.OK).json({
+  //     success: true,
+  //     message: 'Get Tasks.',
+  //     data: {
+  //       getTasks,
+  //     },
+  //   });
+  // }
 
   async getTaskById(id: string): Promise<Task | null> {
     return this.taskModel.findById(id).exec();
+  }
+
+  async listTasks(
+    queryOptions: Record<string, unknown>,
+    paginationOptions: Record<string, number>,
+  ) {
+    const { page, limit } = paginationOptions;
+    const skippedTasks = (page - 1) * limit;
+    return await this.taskModel
+      .find(queryOptions)
+      .skip(skippedTasks)
+      .limit(limit)
+      .exec();
   }
 
   async updateTaskStatus(id: string, status: TaskStatus): Promise<Task | null> {

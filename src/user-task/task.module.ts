@@ -21,6 +21,6 @@ export class TaskModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes({ path: '/task', method: RequestMethod.GET });
+      .forRoutes({ path: '/task/list', method: RequestMethod.GET });
   }
 }

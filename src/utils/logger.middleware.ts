@@ -7,6 +7,7 @@ import { Request } from './custom.request.interface';
 export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.split(' ')[1];
+    console.log('token', token);
     if (!token) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
