@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Task, TaskDocument, TaskStatus } from './model/task.model';
 import { CreateTaskDto } from './Dto/task.dto';
 @Injectable()
@@ -12,7 +12,7 @@ export class TaskService {
     return task.save();
   }
 
-  async getTaskById(id: string): Promise<Task | null> {
+  async getTaskById(id: ObjectId): Promise<Task | null> {
     return this.taskModel.findById(id).exec();
   }
 

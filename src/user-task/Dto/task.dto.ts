@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, IsMongoId } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateTaskDto {
   @IsString()
@@ -9,8 +10,8 @@ export class CreateTaskDto {
   @IsNotEmpty()
   description: string;
 
-  @IsString()
-  userId: string;
+  @IsMongoId()
+  userId: Types.ObjectId;
 
   @IsEnum(['pending', 'completed'])
   status: 'pending' | 'completed';

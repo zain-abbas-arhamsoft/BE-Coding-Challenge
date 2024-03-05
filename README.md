@@ -59,3 +59,7 @@ npm install
 3. To start the project, run:
 
 npm run start
+
+# how to Create a seeder to create the first Admin User in the database by running a command
+npm run seed before starting an application
+

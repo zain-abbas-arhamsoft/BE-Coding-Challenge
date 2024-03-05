@@ -7,19 +7,38 @@ import {
   Param,
   Body,
   Query,
+  Response,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from '../user-task/Dto/task.dto';
 import { TaskStatus, Task } from '../user-task/model/task.model';
 import { ApiTags } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 @ApiTags('Task')
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Post('create')
-  createTask(@Body() createTaskDto: CreateTaskDto): Promise<CreateTaskDto> {
-    return this.taskService.createTask(createTaskDto);
+  async createTask(
+    @Response() res,
+    @Body() createTaskDto: CreateTaskDto,
+  ): Promise<CreateTaskDto> {
+    try {
+      const createdTask = await this.taskService.createTask(createTaskDto);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Task created successfully.',
+        data: createdTask,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get('/list')
@@ -41,8 +60,27 @@ export class TaskController {
   }
 
   @Get('/:id')
-  getTaskById(@Param('id') id: string): Promise<CreateTaskDto> {
-    return this.taskService.getTaskById(id);
+  async getTaskById(
+    @Response() res,
+    @Param('id') id: ObjectId,
+  ): Promise<CreateTaskDto> {
+    try {
+      const fetchTask = await this.taskService.getTaskById(id);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Fetch Task.',
+        data: fetchTask,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        return;
+      } else {
+        throw new HttpException(
+          'Internal Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
   }
 
   @Put('/:id/status')
