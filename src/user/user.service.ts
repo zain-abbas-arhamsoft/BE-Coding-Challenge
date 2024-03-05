@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './model/user.schema';
@@ -32,10 +28,7 @@ export class UserService {
     return createdUser.save();
   }
 
-  async login(
-    userDto: CreateUserDto,
-  ): Promise<String | null> {
-
+  async login(userDto: CreateUserDto): Promise<string | null> {
     const { username, password } = userDto;
 
     try {
@@ -43,11 +36,14 @@ export class UserService {
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
       }
-      const payload = { username: user.username, sub: user._id, role: user.role };
+      const payload = {
+        username: user.username,
+        sub: user._id,
+        role: user.role,
+      };
       return this.jwtService.sign(payload);
-    }
-    catch (error) {
-      throw Error(error)
+    } catch (error) {
+      throw Error(error);
     }
   }
 }
