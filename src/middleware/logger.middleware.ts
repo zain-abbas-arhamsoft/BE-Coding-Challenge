@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { Request } from './custom.request.interface';
+import { Request } from '../utils/custom.request.interface';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

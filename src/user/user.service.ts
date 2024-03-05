@@ -2,7 +2,6 @@ import {
   Injectable,
   HttpException,
   HttpStatus,
-  Response,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -35,21 +34,20 @@ export class UserService {
 
   async login(
     userDto: CreateUserDto,
-    @Response() response,
-  ): Promise<UserDocument> {
+  ): Promise<String | null> {
+
     const { username, password } = userDto;
-    const user = await this.findByUsername(username);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+
+    try {
+      const user = await this.findByUsername(username);
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      }
+      const payload = { username: user.username, sub: user._id, role: user.role };
+      return this.jwtService.sign(payload);
     }
-    const payload = { username: user.username, sub: user._id, role: user.role };
-    const jwt = this.jwtService.sign(payload);
-    return response.status(HttpStatus.OK).json({
-      success: true,
-      message: 'User logged in successfully.',
-      data: {
-        jwt,
-      },
-    });
+    catch (error) {
+      throw Error(error)
+    }
   }
 }

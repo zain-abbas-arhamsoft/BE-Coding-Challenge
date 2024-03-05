@@ -33,3 +33,5 @@ Here is a link to the Swagger documentation for your API:
 
 # Node JS version
 18.15.0
+npm i
+npm run start

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Response } from '@nestjs/common';
+import { Controller, Post, Body, Response, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './Dto/user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -16,8 +16,22 @@ export class UserController {
     type: CreateUserDto,
   })
   @Post('signup')
-  async create(@Body() createUserDto: CreateUserDto): Promise<CreateUserDto> {
-    return this.userService.createUser(createUserDto);
+  async create(@Response() res, @Body() createUserDto: CreateUserDto): Promise<CreateUserDto> {
+    try {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'User logged in successfully.',
+        data: await this.userService.createUser(createUserDto)
+      });
+    }
+    catch (error) {
+      if (error instanceof HttpException) {
+        return ;
+      } else {
+        throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+
   }
   @ApiOperation({
     summary: 'Login User',
@@ -30,6 +44,16 @@ export class UserController {
   })
   @Post('login')
   async login(@Response() res, @Body() userDTO: CreateUserDto) {
-    await this.userService.login(userDTO, res);
+    try {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          message: 'User logged in successfully.',
+          data: await this.userService.login(userDTO)
+        });
+    }
+    catch (error) {
+      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
 }

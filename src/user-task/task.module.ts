@@ -9,7 +9,7 @@ import { TaskController } from '../user-task/task.controller';
 import { TaskService } from '../user-task/task.service';
 import * as dotenv from 'dotenv';
 import { TaskSchema } from './model/task.model';
-import { LoggerMiddleware } from '../utils/logger.middleware';
+import { LoggerMiddleware } from '../middleware/logger.middleware';
 dotenv.config();
 
 @Module({

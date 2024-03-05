@@ -8,7 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { InviteController } from './invite.controller';
 import { InviteService } from './invite.service';
 import { InviteSchema } from './model/invite.schema';
-import { LoggerMiddleware } from '../utils/logger.middleware';
+import { LoggerMiddleware } from '../middleware/logger.middleware';
 
 @Module({
   imports: [
