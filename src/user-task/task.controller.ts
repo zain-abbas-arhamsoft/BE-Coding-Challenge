@@ -6,8 +6,6 @@ import {
   Delete,
   Param,
   Body,
-  // Request,
-  // Response,
   Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
@@ -22,11 +20,6 @@ export class TaskController {
   createTask(@Body() createTaskDto: CreateTaskDto): Promise<CreateTaskDto> {
     return this.taskService.createTask(createTaskDto);
   }
-
-  // @Get('/')
-  // getTasks(@Request() req, @Response() res): Promise<CreateTaskDto[]> {
-  //   return this.taskService.getTasks(req, res);
-  // }
 
   @Get('/list')
   async listTasks(

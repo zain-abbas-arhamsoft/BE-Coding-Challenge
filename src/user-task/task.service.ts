@@ -1,10 +1,4 @@
-import {
-  Injectable,
-  // Request,
-  // Response,
-  // HttpException,
-  // HttpStatus,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task, TaskDocument, TaskStatus } from './model/task.model';
@@ -17,20 +11,6 @@ export class TaskService {
     const task = new this.taskModel(createTaskDto);
     return task.save();
   }
-
-  // async getTasks(@Request() req, @Response() response): Promise<Task[]> {
-  //   const { userId } = req;
-  //   if (!userId)
-  //     throw new HttpException('User Id not exsist', HttpStatus.BAD_REQUEST);
-  //   const getTasks = await this.taskModel.find().exec();
-  //   return response.status(HttpStatus.OK).json({
-  //     success: true,
-  //     message: 'Get Tasks.',
-  //     data: {
-  //       getTasks,
-  //     },
-  //   });
-  // }
 
   async getTaskById(id: string): Promise<Task | null> {
     return this.taskModel.findById(id).exec();
