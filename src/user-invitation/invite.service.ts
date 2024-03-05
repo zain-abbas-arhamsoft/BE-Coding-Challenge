@@ -1,21 +1,23 @@
-import { Injectable, HttpStatus, Response } from '@nestjs/common';
+import { Injectable, HttpStatus, Response, Request } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HttpException } from '@nestjs/common';
 import * as moment from 'moment';
 import { Invite, InviteDocument } from './model/invite.schema';
-import { CreateInviteDto } from './Dto/invite.dto';
 import * as randomatic from 'randomatic';
 
 @Injectable()
 export class InviteService {
   constructor(
-    @InjectModel(Invite.name) private readonly inviteModel: Model<InviteDocument>,
+    @InjectModel(Invite.name)
+    private readonly inviteModel: Model<InviteDocument>,
   ) {}
 
-  async createInvite(@Response() response,createInviteDto: CreateInviteDto) {
-    const { userId } = createInviteDto;
-    const code =  randomatic('Aa0', 6); // Generates a random code with uppercase letters, lowercase letters, and numbers
+  async createInvite(@Request() req, @Response() response) {
+    const { userId } = req;
+    if (!userId)
+      throw new HttpException('user id not exsist', HttpStatus.BAD_REQUEST);
+    const code = randomatic('Aa0', 6); // Generates a random code with uppercase letters, lowercase letters, and numbers
     let invite = await this.inviteModel.findOne({ userId }).exec();
     if (invite) {
       // Resending the invite, update the expiration date
@@ -43,7 +45,5 @@ export class InviteService {
         },
       });
     }
-    
   }
-
 }

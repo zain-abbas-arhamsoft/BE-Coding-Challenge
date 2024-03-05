@@ -1,5 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskController } from '../user-task/task.controller';
 import { TaskService } from '../user-task/task.service';
@@ -9,16 +13,14 @@ import { LoggerMiddleware } from '../utils/logger.middleware';
 dotenv.config();
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema }]),
-    ],
-    controllers: [TaskController],
-    providers: [TaskService],
+  imports: [MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema }])],
+  controllers: [TaskController],
+  providers: [TaskService],
 })
 export class TaskModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-            .apply(LoggerMiddleware)
-            .forRoutes('create');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '/task', method: RequestMethod.GET });
+  }
 }

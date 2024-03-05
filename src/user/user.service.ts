@@ -38,12 +38,12 @@ export class UserService {
     @Response() response,
   ): Promise<UserDocument> {
     const { username, password } = userDto;
-    console.log('username', username)
+    console.log('username', username);
     const user = await this.findByUsername(username);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.username, sub: user._id, role: user.role };
     const jwt = this.jwtService.sign(payload);
     return response.status(HttpStatus.OK).json({
       success: true,

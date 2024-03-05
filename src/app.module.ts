@@ -17,7 +17,7 @@ dotenv.config();
     MongooseModule.forRoot(process.env.DB_URI),
     UserModule,
     InviteModule,
-    TaskModule
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

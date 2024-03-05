@@ -11,9 +11,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'User', schema: UserSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     JwtModule.register({ secret: process.env.SECRET_KEY }),
     PassportModule.register({
       defaultStrategy: 'jwt',
