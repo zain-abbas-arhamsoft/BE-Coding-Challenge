@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from './user/model/user.schema';
+import { User, UserDocument } from '../user/model/user.schema';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -9,9 +9,6 @@ export class Seeder {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async seed() {
-    if (this['seederHasRun']) {
-      return;
-    }
     const existingUser = await this.userModel
       .findOne({ username: 'admin' })
       .exec();
@@ -26,6 +23,5 @@ export class Seeder {
       role: 'Admin',
     });
     await user.save();
-    this['seederHasRun'] = true;
   }
 }

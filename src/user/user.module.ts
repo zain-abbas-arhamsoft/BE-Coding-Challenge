@@ -6,7 +6,7 @@ import { UserSchema } from './model/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../utils/auth.guard';
-import { Seeder } from '../seeder';
+import { Seeder } from '../seeder/seeder';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({

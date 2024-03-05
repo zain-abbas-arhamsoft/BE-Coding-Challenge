@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-import { Seeder } from './seeder';
+import { Seeder } from './seeder/seeder';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +13,7 @@ async function bootstrap() {
     .setTitle('Backend coding challenge Api ')
     .setDescription('The Backend coding challenge API description')
     .setVersion('1.0')
-    .addTag('user')
+    .addTag('backend api')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

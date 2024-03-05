@@ -1,4 +1,4 @@
-import { Controller, Post, HttpStatus } from '@nestjs/common';
+import { Controller, Post, HttpStatus, HttpException } from '@nestjs/common';
 import { InviteService } from './invite.service';
 import { Response, Request } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -25,12 +25,14 @@ export class InviteController {
         });
       }
     } catch (error) {
-      // Handle any errors that might occur during the invite creation process
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        success: false,
-        message: 'An error occurred while creating the invitation.',
-        error: error.message,
-      });
+      if (error instanceof HttpException) {
+        return;
+      } else {
+        throw new HttpException(
+          'Internal Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 }
