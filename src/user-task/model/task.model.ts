@@ -5,7 +5,6 @@ export type TaskDocument = Task & Document;
 
 export enum TaskStatus {
   PENDING = 'pending',
-  ONGOING = 'ongoing',
   COMPLETED = 'completed',
 }
 

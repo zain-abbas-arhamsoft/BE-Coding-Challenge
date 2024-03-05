@@ -12,6 +12,6 @@ export class CreateTaskDto {
   @IsString()
   userId: string;
 
-  @IsEnum(['pending', 'ongoing', 'completed'])
-  status: 'pending' | 'ongoing' | 'completed';
+  @IsEnum(['pending', 'completed'])
+  status: 'pending' | 'completed';
 }
