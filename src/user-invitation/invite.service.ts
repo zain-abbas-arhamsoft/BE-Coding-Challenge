@@ -2,7 +2,7 @@ import { Injectable, Request } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as moment from 'moment';
-import { Invite, InviteDocument } from './model/invite.schema';
+import { Invite, InviteDocument } from '../models/invite.model';
 import * as randomatic from 'randomatic';
 
 @Injectable()

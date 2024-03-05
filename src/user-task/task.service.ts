@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
-import { Task, TaskDocument, TaskStatus } from './model/task.model';
+import { Task, TaskDocument, TaskStatus } from '../models/task.model';
 import { CreateTaskDto } from './Dto/task.dto';
 @Injectable()
 export class TaskService {

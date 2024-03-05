@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from '../user-task/Dto/task.dto';
-import { TaskStatus, Task } from '../user-task/model/task.model';
+import { TaskStatus, Task } from '../models/task.model';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
 @ApiTags('Task')

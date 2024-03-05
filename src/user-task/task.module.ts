@@ -8,7 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TaskController } from '../user-task/task.controller';
 import { TaskService } from '../user-task/task.service';
 import * as dotenv from 'dotenv';
-import { TaskSchema } from './model/task.model';
+import { TaskSchema } from '../models/task.model';
 import { LoggerMiddleware } from '../middleware/logger.middleware';
 dotenv.config();
 
