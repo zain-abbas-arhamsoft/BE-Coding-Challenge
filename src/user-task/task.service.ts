@@ -19,7 +19,6 @@ export class TaskService {
   }
 
   async getTasks(@Request() req, @Response() response): Promise<Task[]> {
-    console.log(req.userId);
     const { userId } = req;
     if (!userId)
       throw new HttpException('user id not exsist', HttpStatus.BAD_REQUEST);

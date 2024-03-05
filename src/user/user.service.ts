@@ -38,7 +38,6 @@ export class UserService {
     @Response() response,
   ): Promise<UserDocument> {
     const { username, password } = userDto;
-    console.log('username', username);
     const user = await this.findByUsername(username);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);

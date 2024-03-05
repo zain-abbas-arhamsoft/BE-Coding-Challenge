@@ -6,9 +6,7 @@ import { Request } from './custom.request.interface';
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log(req.headers.authorization);
     const token = req.headers.authorization?.split(' ')[1];
-    console.log('token...', token);
     if (!token) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
@@ -18,7 +16,6 @@ export class LoggerMiddleware implements NestMiddleware {
     }
     if (token) {
       const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
-      console.log('decoded', decoded);
       if (typeof decoded === 'string') {
         res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
