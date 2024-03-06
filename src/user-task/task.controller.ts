@@ -51,15 +51,18 @@ export class TaskController {
     @Query('status') status: string,
   ) {
     try {
-    const queryOptions = {};
-    if (title) {
-      queryOptions['title'] = title;
-    }
-    if (status) {
-      queryOptions['status'] = status;
-    }
-    const paginationOptions = { page, limit };
-      const taskList = await this.taskService.listTasks(queryOptions, paginationOptions);
+      const queryOptions = {};
+      if (title) {
+        queryOptions['title'] = title;
+      }
+      if (status) {
+        queryOptions['status'] = status;
+      }
+      const paginationOptions = { page, limit };
+      const taskList = await this.taskService.listTasks(
+        queryOptions,
+        paginationOptions,
+      );
       return res.status(HttpStatus.OK).json({
         success: true,
         message: 'Get Task List.',
@@ -119,7 +122,10 @@ export class TaskController {
   }
 
   @Delete('/:id')
-  async deleteTask(@Response() res, @Param('id') id: string): Promise<CreateTaskDto> {
+  async deleteTask(
+    @Response() res,
+    @Param('id') id: string,
+  ): Promise<CreateTaskDto> {
     try {
       const deleteTask = await this.taskService.deleteTask(id);
       return res.status(HttpStatus.OK).json({
