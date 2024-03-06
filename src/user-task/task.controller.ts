@@ -16,7 +16,6 @@ import { CreateTaskDto } from '../user-task/Dto/task.dto';
 import { TaskStatus, Task } from '../models/task.model';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
-import { Response } from 'supertest';
 @ApiTags('Task')
 @Controller('task')
 export class TaskController {
