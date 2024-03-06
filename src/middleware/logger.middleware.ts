@@ -23,7 +23,7 @@ export class LoggerMiddleware implements NestMiddleware {
           data: null,
         });
       } else {
-        if (decoded.role !== 'admin') {
+        if (decoded.role !== 'Admin') {
           return res.status(HttpStatus.FORBIDDEN).json({
             success: false,
             message: 'Forbidden',

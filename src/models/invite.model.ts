@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as moment from 'moment';
-import { Types } from 'mongoose'; // import the Types object
+import { Types } from 'mongoose';
 
 export type InviteDocument = Invite & Document;
 @Schema()

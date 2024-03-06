@@ -16,6 +16,7 @@ import { CreateTaskDto } from '../user-task/Dto/task.dto';
 import { TaskStatus, Task } from '../models/task.model';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
+import { Response } from 'supertest';
 @ApiTags('Task')
 @Controller('task')
 export class TaskController {
@@ -43,11 +44,13 @@ export class TaskController {
 
   @Get('/list')
   async listTasks(
+    @Response() res,
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('title') title: string,
     @Query('status') status: string,
   ) {
+    try {
     const queryOptions = {};
     if (title) {
       queryOptions['title'] = title;
@@ -56,7 +59,18 @@ export class TaskController {
       queryOptions['status'] = status;
     }
     const paginationOptions = { page, limit };
-    return await this.taskService.listTasks(queryOptions, paginationOptions);
+      const taskList = await this.taskService.listTasks(queryOptions, paginationOptions);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Get Task List.',
+        data: taskList,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get('/:id')
@@ -84,15 +98,40 @@ export class TaskController {
   }
 
   @Put('/:id/status')
-  updateTaskStatus(
+  async updateTaskStatus(
+    @Response() res,
     @Param('id') id: string,
     @Body('status') status: TaskStatus,
   ): Promise<Task | null> {
-    return this.taskService.updateTaskStatus(id, status);
+    try {
+      const updateTask = await this.taskService.updateTaskStatus(id, status);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Task Updated successfully',
+        data: updateTask,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): Promise<CreateTaskDto> {
-    return this.taskService.deleteTask(id);
+  async deleteTask(@Response() res, @Param('id') id: string): Promise<CreateTaskDto> {
+    try {
+      const deleteTask = await this.taskService.deleteTask(id);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Task deleted successfully',
+        data: deleteTask,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
