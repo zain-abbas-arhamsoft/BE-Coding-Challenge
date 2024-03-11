@@ -4,17 +4,9 @@
 
 I have have separated the business logic from the presentation logic by using a separate TaskController class to handle HTTP requests and a separate TaskService class to handle the business logic. This is a common design pattern in web development that separates concerns and makes the code more modular and maintainable.
 
-# Repository Pattern:
-
-I have used the InjectModel decorator from NestJS to inject an instance of the TaskModel class into the TaskService class. This is a common design pattern in web development that abstracts the data access logic from the business logic. It allows to switch out the underlying data store (e.g., MongoDB, MySQL, etc.) without changing the business logic.
-
 # Middleware Pattern:
 
 I have used a custom middleware function called LoggerMiddleware to log incoming HTTP requests. This is a common design pattern in web development that allows to intercept and modify incoming HTTP requests before they reach the controller.
-
-# Interceptor Pattern:
-
-I have used a custom interceptor function called AuthInterceptor to verify incoming JWT tokens and add the user ID to the request object. This is a common design pattern in web development that allows to intercept and modify incoming HTTP requests before they reach the controller.
 
 # Service Pattern:
 
